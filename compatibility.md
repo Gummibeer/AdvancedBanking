@@ -140,7 +140,7 @@ Hello everyone, below is a compiled list of instructions to make Advanced Bankin
 1. De-PBO enigma_exile_custom
 2. Navigate to compile/Enigma and open up Exile_RevivePlayer.sqf
     1. After
-    
+
                 _accountData = format["getAccountStats:%1", _requestingPlayerUID] call ExileServer_system_database_query_selectSingle;
 
         add
@@ -266,3 +266,42 @@ Hello everyone, below is a compiled list of instructions to make Advanced Bankin
 
             ["buyRequest",[str(box6Cost)]] call ExileClient_system_network_send;
 9. Save and you are done!
+
+Zupa's Capture Points 2.0 (ZCP)
+
+
+Exile Forum Post: HERE
+Difficulty: Easy
+Instructions
+
+1. De-PBO a3_zcp_exile.pbo
+
+2. Navigate to the functions folder and open fn_rewardReputation.sqf
+
+3. Change
+            _ZCP_currentCapper setVariable['PLAYER_STATS_VAR', [_ZCP_currentCapper getVariable ['ExileMoney', 0], _playerScore],true];
+
+    to
+
+            _ZCP_currentCapper setVariable['PLAYER_STATS_VAR', [_ZCP_currentCapper getVariable ['ExilePurse', 0], _playerScore],true];
+
+4. Change
+            _x setVariable['PLAYER_STATS_VAR', [_x getVariable ['ExileMoney', 0], _newScore],true];
+
+    to
+
+            _x setVariable['PLAYER_STATS_VAR', [_x getVariable ['ExilePurse', 0], _newScore],true];
+
+5. Navigate to the functions folder and open fn_rewardPoptabs.sqf
+6. Change
+            _playerMoney = _ZCP_currentCapper getVariable ["ExileMoney", 0];
+    to
+            _playerMoney = _ZCP_currentCapper getVariable ["ExilePurse", 0]; 
+7. Change
+            format["setAccountMoney:%1:%2", _playerMoney, (getPlayerUID _ZCP_currentCapper)] call ExileServer_system_database_query_fireAndForget;
+    to
+
+        format["updateWallet:%1:%2", _playerMoney, (getPlayerUID _ZCP_currentCapper)] call ExileServer_system_database_query_fireAndForget;
+        format["setAccountScore:%1:%2",_playerMoney, (getPlayerUID _ZCP_currentCapper)] call ExileServer_system_database_query_fireAndForget;
+
+8. Re-PBO a3_zcp_exile and replace on your server
