@@ -54,13 +54,15 @@ If you **have** changed any of the above files, follow these instructions: [Here
 ---
 
 ### Changelog
-Version 3 ()
+Version 3.0 (9/5/2016)
 * Brand new GUI design, courtesy of Mr. White. :)
 * Rewrote to use pre-existing variables (Removes need for half of rewrites)
 * Moved wallet drop to suitcase instead of player. (Should take care of ArmA cleanup issues)
 * Removed need for compatibility unless accessing bank money
 * Added config options on server for Fresh servers or servers coming from previous versions (Database cleanup)
 * Moved ATMs spawning to client side so addAction could be used instead of relying on InteractionMenus (Takes care of not getting ATM scroll option issue)
+* XM8 modification is minimal and only modifies the "money" square so it's more compatible with other scripts. 
+* Dropped wallet collection now watches for player death. If the collector is killed before collection is finished, the money doesn't get collected. 
 * Small bug fixes and code clean up
 
 Version 2.4 (10/03/2016)
