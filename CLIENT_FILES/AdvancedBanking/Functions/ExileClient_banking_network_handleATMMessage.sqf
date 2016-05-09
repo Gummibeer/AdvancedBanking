@@ -11,31 +11,55 @@
  	Description:
     Handles messages based on dumbassery
 */
-private ["_package","_message","_display","_messageBox","_messageType"];
-_messageType = _this select 0;
-_message = _this select 1;
+private ["_package","_message","_display","_messageBox","_messageType","_messageArea"];
 
-[_messageType,_message] spawn {
+disableSerialization;
+params ["_messageArea","_messageType","_message"];
+
+if (_messageArea isEqualTo 1) then
+{
+    // Deposit
+    [9050,_messageType,toUpper(_message)] spawn fnc_atmMessage;
+}
+else
+{
+    if (_messageArea isEqualTo 2) then
+    {
+        // Withdraw
+        [9051,_messageType,toUpper(_message)] spawn fnc_atmMessage;
+    }
+    else
+    {
+        // Transfer
+        [9052,_messageType,toUpper(_message)] spawn fnc_atmMessage;
+    };
+};
+
+if (ADVBANKING_CLIENT_DEBUG) then {[format["Display Message: %1",_message],"ATMMessage"] call ExileClient_banking_utils_diagLog;};
+
+
+fnc_atmMessage = {
     disableSerialization;
-    _messageType = _this select 0;
-    _message = toUpper(_this select 1);
+    params ["_idd","_messageType","_message"];
 
     _display = uiNameSpace getVariable ["AdvBankingATM", displayNull];
-    _messageBox = (_display displayCtrl 11012);
 
-    if (_messageType isEqualTo "Success") then {
+    if (_messageType isEqualTo "Success") then
+    {
         //Success
-        _messageBox ctrlSetStructuredText parseText Format["<t color='#00b300' font='OrbitronLight' size='1' valign='middle' align='center' shadow='0'>%1</t>",_message];
-    } else {
+        (_display displayCtrl _idd) ctrlSetStructuredText parseText Format["<t color='#00b300' font='PuristaMedium' size='0.7' valign='middle' align='left' shadow='0'>%1</t>",_message];
+    }
+    else
+    {
         //Error
-        _messageBox ctrlSetStructuredText parseText Format["<t color='#b30000' font='OrbitronLight' size='1' valign='middle' align='center' shadow='0'>%1</t>",_message];
+        (_display displayCtrl _idd) ctrlSetStructuredText parseText Format["<t color='#b30000' font='PuristaMedium' size='0.7' valign='middle' align='left' shadow='0'>%1</t>",_message];
     };
-    if (ADVBANKING_CLIENT_DEBUG) then {[format["Display Message: %1",_message],"ATMMessage"] call ExileClient_banking_utils_diagLog;};
-    _messageBox ctrlSetFade 0;
-    _messageBox ctrlCommit 0.25;
+
+    (_display displayCtrl _idd) ctrlSetFade 0;
+    (_display displayCtrl _idd) ctrlCommit 0.25;
 
     uiSleep 5;
 
-    _messageBox ctrlSetFade 1;
-    _messageBox ctrlCommit 0.25;
+    (_display displayCtrl _idd) ctrlSetFade 1;
+    (_display displayCtrl _idd) ctrlCommit 0.25;
 };

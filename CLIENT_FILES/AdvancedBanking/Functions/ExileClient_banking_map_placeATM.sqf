@@ -1,6 +1,6 @@
 /*
 
- 	Name: ExileServer_banking_map_placeATM.sqf
+ 	Name: ExileClient_banking_map_placeATM.sqf
 
  	Description:
     Places ATMs on map.
@@ -86,11 +86,21 @@ switch (toLower worldName) do {
 {
     private ["_object"];
 
-    _object = (_x select 0) createVehicle [0,0,0];
+    _object = (_x select 0) createVehicleLocal [0,0,0];
     _object setDir (_x select 2);
     _object setPosATL (_x select 1);
     _object enableSimulation false;
-	_marker = createMarker ["cashpoint_" + str(_forEachIndex), _x select 1];
+	_object addAction [
+		"<t size='1.25'>Access ATM</t>",					// Action Text
+		"createDialog 'AdvBankingATM'",						// Script/code to run
+		"", 												// Arguments
+		1,													// priority
+		false,												// ShowWindow
+		true,												// Hide on use
+		"",													// Shortcut
+		"((position player) distance _target) <= 4"			// condition
+		];
+	_marker = createMarkerLocal ["cashpoint_" + str(_forEachIndex), _x select 1];
 	_marker setMarkerShape "ICON";
 	_marker setMarkerType "loc_Tourism";
 	_marker setMarkerColor "ColorGreen";
@@ -99,6 +109,6 @@ switch (toLower worldName) do {
 }
 forEach _objects;
 
-if (ADVBANKING_SERVER_DEBUG) then {
-	["ATMs have been placed","PlaceATM"] call ExileServer_banking_utils_diagLog;
+if (ADVBANKING_CLIENT_DEBUG) then {
+	["ATMs have been placed","PlaceATM"] call ExileClient_banking_utils_diagLog;
 };

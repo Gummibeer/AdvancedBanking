@@ -43,10 +43,10 @@ try {
         [_sessionID,"updateBankStats",[str(_bank)]] call ExileServer_system_network_send_to;
         [format["Sale Request Invoked: Previous Player Bank: %1 Amount to be Added: %2 Final Bank Amount: %3",(_bank - _amount),_amount,_bank],"SaleRequest"] call ExileServer_banking_utils_diagLog;
     } else {
-        _wallet = _playerObject getVariable ["ExilePurse",0];
+        _wallet = _playerObject getVariable ["ExileMoney",0];
         _wallet = _wallet + _amount;
-        _playerObject setVariable ["ExilePurse",_wallet];
-        format["updateWallet:%1:%2",_wallet,(getPlayerUID _playerObject)] call ExileServer_system_database_query_fireAndForget;
+        _playerObject setVariable ["ExileMoney",_wallet];
+        format["setAccountMoney:%1:%2",_wallet,(getPlayerUID _playerObject)] call ExileServer_system_database_query_fireAndForget;
         [_sessionID,"updateWalletStats",[str(_wallet)]] call ExileServer_system_network_send_to;
         [format["Sale Request Invoked: Previous Player Wallet: %1 Amount to be Added: %2 Final Wallet Amount: %3",(_wallet - _amount),_amount,_wallet],"SaleRequest"] call ExileServer_banking_utils_diagLog;
     };

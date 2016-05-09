@@ -1,11 +1,14 @@
-/**
- * Exile Mod
- * www.exilemod.com
- * © 2015 Exile Mod Team
- *
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
- * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/.
- */
+/*
+
+ 	Name: fn_preInit.sqf
+
+ 	Author(s): Shix and WolfkillArcadia
+    Copyright (c) 2016 Shix and WolfkillArcadia
+
+    This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+    To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/.
+
+*/
 
 // START CONFIGURATION //
 
@@ -13,22 +16,25 @@
 // Only use this if you are having an issue.
 ADVBANKING_SERVER_DEBUG = false;
 
+// DISABLE THIS OPTION ONLY IF YOUR SERVER IS NOT A FRESH SERVER!
+// If disabled, this will check to see if the player has no money in their bank
+// If so, move it to their bank. This is for servers that had a lot of players but never had Advanced Banking
+ADVBANKING_SERVER_FRESH = true;
+
+// ONLY ENABLE IF YOU WERE RUNNING ADVANCED BANKING 2.4 AND BELOW!!!!
+// Checks to see if a player exists in the player_bank table
+// If they are, it will move it across tables and then delete the entry
+ADVBANKING_SERVER_PREVIOUS_VERSION = false;
+
 // END CONFIGURATION //
 
-private ['_code', '_function', '_file'];
-
+private ['_code'];
 {
-    _code = '';
-    _function = _x select 0;
-    _file = _x select 1;
-
-    _code = compileFinal (preprocessFileLineNumbers _file);
-
-    missionNamespace setVariable [_function, _code];
+    _code = compileFinal (preprocessFileLineNumbers (_x select 1));
+    missionNamespace setVariable [(_x select 0), _code];
 }
 forEach
 [
-    ['ExileServer_banking_map_placeATM','AdvBanking_Server\code\ExileServer_banking_map_placeATM.sqf'],
     ['ExileServer_banking_network_buyRequest','AdvBanking_Server\code\ExileServer_banking_network_buyRequest.sqf'],
     ['ExileServer_banking_network_collectionRequest','AdvBanking_Server\code\ExileServer_banking_network_collectionRequest.sqf'],
     ['ExileServer_banking_network_depositRequest','AdvBanking_Server\code\ExileServer_banking_network_depositRequest.sqf'],

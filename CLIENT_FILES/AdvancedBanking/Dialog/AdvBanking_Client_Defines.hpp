@@ -106,7 +106,7 @@
 ///////////////////////////////////////////////////////////////////////////
 /// Base Classes
 ///////////////////////////////////////////////////////////////////////////
-class AdvBakingRscText
+class AdvBankingRscText
 {
 	deletable = 0;
 	fade = 0;
@@ -114,7 +114,7 @@ class AdvBakingRscText
 	type = 0;
 	idc = -1;
 	colorBackground[] ={0,0,0,0};
-	colorText[] ={1,1,1,1};
+	colorText[] ={0.396,0.553,0.659,1};
 	text = "";
 	fixedWidth = 0;
 	x = 0;
@@ -122,7 +122,7 @@ class AdvBakingRscText
 	h = 0.037;
 	w = 0.3;
 	style = 0;
-	shadow = 1;
+	shadow = 0;
 	colorShadow[] ={0,0,0,0.5};
 	font = "PuristaMedium";
 	SizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
@@ -131,7 +131,7 @@ class AdvBakingRscText
 	tooltipColorBox[] ={1,1,1,1};
 	tooltipColorShade[] ={0,0,0,0.65};
 };
-class AdvBakingRscStructuredText
+class AdvBankingRscStructuredText
 {
 	deletable = 0;
 	fade = 0;
@@ -156,7 +156,7 @@ class AdvBakingRscStructuredText
 	size = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	shadow = 1;
 };
-class AdvBakingRscPictureKeepAspect
+class AdvBankingRscPictureKeepAspect
 {
 	access = 0;
 	colorBackground[] = {0,0,0,0};
@@ -180,31 +180,29 @@ class AdvBakingRscPictureKeepAspect
 	x = 0;
 	y = 0;
 };
-class AdvBakingRscPicture
+class AdvBankingRscPicture
 {
-	deletable = 0;
-	fade = 0;
 	access = 0;
 	type = 0;
 	idc = -1;
 	style = 48;
-	colorBackground[] ={0,0,0,0};
-	colorText[] ={1,1,1,1};
-	font = "TahomaB";
+	shadow = 0;
+	colorText[] = {1,1,1,1};
+	colorBackground[] = {0,0,0,0};
+	text = "";
+	font = "PuristaMedium";
 	sizeEx = 0;
 	lineSpacing = 0;
-	text = "";
 	fixedWidth = 0;
-	shadow = 0;
 	x = 0;
 	y = 0;
 	w = 0.2;
 	h = 0.15;
-	tooltipColorText[] ={1,1,1,1};
-	tooltipColorBox[] ={1,1,1,1};
-	tooltipColorShade[] ={0,0,0,0.65};
+	tooltipColorText[] = {1,1,1,1};
+	tooltipColorBox[] = {1,1,1,1};
+	tooltipColorShade[] = {0,0,0,0.65};
 };
-class AdvBakingRscEdit
+class AdvBankingRscEdit
 {
 	deletable = 0;
 	fade = 0;
@@ -215,7 +213,7 @@ class AdvBakingRscEdit
 	h = 0.04;
 	w = 0.2;
 	colorBackground[] ={0,0,0,0};
-	colorText[] ={1,1,1,1};
+	colorText[] ={0.149,0.149,0.149,1};
 	colorDisabled[] ={1,1,1,0.25};
 	colorSelection[] =
 	{
@@ -227,33 +225,33 @@ class AdvBakingRscEdit
 	autocomplete = "";
 	text = "";
 	size = 0.2;
-	style = "0x00 + 0x40";
-	font = "OrbitronLight";
-	shadow = 2;
+	style = ST_LEFT + ST_NO_RECT;
+	lineSpacing = 1;
+	font = "EtelkaMonospaceProBold";
+	shadow = 0;
 	sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	canModify = 1;
-	tooltipColorText[] =
-	{1,1,1,1};
+	tooltipColorText[] ={1,1,1,1};
 	tooltipColorBox[] ={1,1,1,1};
 	tooltipColorShade[] ={0,0,0,0.65};
 };
-class AdvBakingRscCombo
+class AdvBankingRscCombo
 {
 	deletable = 0;
 	fade = 0;
 	access = 0;
 	type = 4;
 	colorSelect[] ={0,0,0,1};
-	colorText[] ={1,1,1,1};
+	colorText[] ={0,0,0,1};
 	colorBackground[] ={0,0,0,1};
 	colorScrollbar[] ={1,0,0,1};
-	colorDisabled[] ={1,1,1,0.25};
+	colorDisabled[] ={1,1,1,1};
 	colorPicture[] ={1,1,1,1};
 	colorPictureSelected[] ={1,1,1,1};
-	colorPictureDisabled[] ={1,1,1,0.25};
+	colorPictureDisabled[] ={1,1,1,1};
 	colorPictureRight[] ={1,1,1,1};
 	colorPictureRightSelected[] ={1,1,1,1};
-	colorPictureRightDisabled[] ={1,1,1,0.25};
+	colorPictureRightDisabled[] ={1,1,1,1};
 	colorTextRight[] ={1,1,1,1};
 	colorSelectRight[] ={0,0,0,1};
 	colorSelect2Right[] ={0,0,0,1};
@@ -291,13 +289,13 @@ class AdvBakingRscCombo
 	y = 0;
 	w = 0.12;
 	h = 0.035;
-	colorSelectBackground[] ={1,1,1,0.7};
-	arrowEmpty = "\A3\ui_f\data\GUI\RscCommon\rsccombo\arrow_combo_ca.paa";
-	arrowFull = "\A3\ui_f\data\GUI\RscCommon\rsccombo\arrow_combo_active_ca.paa";
+	colorSelectBackground[] ={1,1,1,1};
+	arrowEmpty = "";
+	arrowFull = "";
 	wholeHeight = 0.45;
 	colorActive[] ={1,0,0,1};
 };
-class AdvBakingRscListBox
+class AdvBankingRscListBox
 {
 	deletable = 0;
 	fade = 0;
@@ -352,7 +350,7 @@ class AdvBakingRscListBox
 	period = 1.2;
 	maxHistoryDelay = 1;
 };
-class AdvBakingRscButton
+class AdvBankingRscButton
 {
 	deletable = 0;
 	fade = 0;
@@ -362,11 +360,11 @@ class AdvBakingRscButton
 	colorText[] ={1,1,1,1};
 	colorDisabled[] ={1,1,1,0.25};
 	colorBackground[] ={0,0,0,0};
-	colorBackgroundDisabled[] ={0,0,0,0.5};
-	colorBackgroundActive[] ={1,1,1,0.05};
-	colorFocused[] ={1,1,1,0};
+	colorBackgroundDisabled[] ={0,0,0,0};
+	colorBackgroundActive[] ={0,0,0,0};
+	colorFocused[] ={0,0,0,0};
 	colorShadow[] ={0,0,0,0};
-	colorBorder[] ={0,0,0,1};
+	colorBorder[] ={0,0,0,0};
 	soundEnter[] =
 	{
 		"\A3\ui_f\data\sound\RscButton\soundEnter",
@@ -405,7 +403,7 @@ class AdvBakingRscButton
 	offsetPressedY = 0;
 	borderSize = 0;
 };
-class AdvBakingRscShortcutButton
+class AdvBankingRscShortcutButton
 {
 	deletable = 0;
 	fade = 0;
@@ -521,7 +519,7 @@ class AdvBakingRscShortcutButton
 		align = "left";
 	};
 };
-class AdvBakingRscShortcutButtonMain
+class AdvBankingRscShortcutButtonMain
 {
 	idc = -1;
 	style = 0;
@@ -577,7 +575,7 @@ class AdvBakingRscShortcutButtonMain
 		align = "false";
 	};
 };
-class AdvBakingRscFrame
+class AdvBankingRscFrame
 {
 	type = 0;
 	idc = -1;
@@ -593,7 +591,7 @@ class AdvBakingRscFrame
 	w = 0.3;
 	h = 0.3;
 };
-class AdvBakingRscSlider
+class AdvBankingRscSlider
 {
 	deletable = 0;
 	fade = 0;
@@ -608,7 +606,7 @@ class AdvBakingRscSlider
 	w = 0.3;
 	h = 0.025;
 };
-class AdvBakingIGUIBack
+class AdvBankingIGUIBack
 {
 	type = 0;
 	idc = 124;
@@ -630,7 +628,7 @@ class AdvBakingIGUIBack
 		"(profilenamespace getvariable ['IGUI_BCG_RGB_A',0.8])"
 	};
 };
-class AdvBakingRscCheckBox
+class AdvBankingRscCheckBox
 {
 	idc = -1;
 	type = 77;
@@ -668,7 +666,7 @@ class AdvBakingRscCheckBox
 	soundClick[] ={"",0.1,1};
 	soundEscape[] ={"",0.1,1};
 };
-class AdvBakingRscTextCheckBox
+class AdvBankingRscTextCheckBox
 {
 	idc = -1;
 	type = 7;
@@ -707,7 +705,7 @@ class AdvBakingRscTextCheckBox
 		"CHECKED"
 	};
 };
-class AdvBakingRscButtonMenu
+class AdvBankingRscButtonMenu
 {
 	idc = -1;
 	type = 16;
@@ -793,7 +791,7 @@ class AdvBakingRscButtonMenu
 		1
 	};
 };
-class AdvBakingRscButtonMenuOK
+class AdvBankingRscButtonMenuOK
 {
 	idc = 1;
 	shortcuts[] ={
@@ -811,7 +809,7 @@ class AdvBakingRscButtonMenuOK
 		1
 	};
 };
-class AdvBakingRscButtonMenuCancel
+class AdvBankingRscButtonMenuCancel
 {
 	idc = 2;
 	shortcuts[] =
@@ -820,7 +818,7 @@ class AdvBakingRscButtonMenuCancel
 	};
 	text = "Cancel";
 };
-class AdvBakingRscControlsGroup
+class AdvBankingRscControlsGroup
 {
 	deletable = 0;
 	fade = 0;
@@ -847,7 +845,7 @@ class AdvBakingRscControlsGroup
 	shadow = 0;
 	style = 16;
 };
-class AdvBakingRscProgress
+class AdvBankingRscProgress
 {
 	type = 8;
 	style = 0;

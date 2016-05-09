@@ -19,28 +19,42 @@ if !(_uid in ["", "__SERVER__", "__HEADLESS__"]) then
 	if (_isKnownAccount) then
 	{
 		format["startAccountSession:%1:%2", _uid, _name] call ExileServer_system_database_query_fireAndForget;
-        // Advance Banking
-        _hasBankAccount = format["hasBankAccount:%1", _uid] call ExileServer_system_database_query_selectSingleField;
-        if (ADVBANKING_SERVER_DEBUG) then {[format["Does player have a bank? %1",_hasBankAccount],"OnPlayerConnected"] call ExileServer_banking_utils_diagLog;};
-        if (!_hasBankAccount) then {
-            format["createBankAccount:%1:%2",_uid,_name] call ExileServer_system_database_query_fireAndForget;
-            _ExileMoney = format["getAccountMoney:%1",_uid] call ExileServer_system_database_query_selectSingleField;
-            if (ADVBANKING_SERVER_DEBUG) then {[format["Okay, player doesn't have a bank account. Do they have previous money? Money:%1",_ExileMoney],"OnPlayerConnected"] call ExileServer_banking_utils_diagLog;};
-            if (_ExileMoney > 0) then {
-                if (ADVBANKING_SERVER_DEBUG) then {["They have money, creating acount and setting new money","onPlayerConnected"] call ExileServer_banking_utils_diagLog;};
-                format["updateBank:%1:%2",_ExileMoney,_uid] call ExileServer_system_database_query_fireAndForget;
-                format["setAccountMoney:%1:%2",0,_uid] call ExileServer_system_database_query_fireAndForget;
-            };
+        // Advanced Banking
+		if (ADVBANKING_SERVER_PREVIOUS_VERSION) then {
+	        _hasBankAccount = format["ughhSorryGuys:%1", _uid] call ExileServer_system_database_query_selectSingleField;
+	        if (ADVBANKING_SERVER_DEBUG) then {[format["Does player have a bank? %1",_hasBankAccount],"OnPlayerConnected"] call ExileServer_banking_utils_diagLog;};
+	        if (_hasBankAccount) then {
+	            _gimmeInfo = format["gimmeInfo:%1",_uid] call ExileServer_system_database_query_selectSingle;
+				_money = _gimmeInfo select 0;
+				_bank = _gimmeInfo select 1;
+	            if (_money > 0) then {
+	                format["setAccountMoney:%1:%2",_money,_uid] call ExileServer_system_database_query_fireAndForget;
+					if (ADVBANKING_SERVER_DEBUG) then {[format["We see bank, we see money in wallet. Time to move it back. :) Amount: %1",_money],"OnPlayerConnected"] call ExileServer_banking_utils_diagLog;};
+	            };
+				if (_bank > 0) then {
+					format["updateBank:%1:%2",_bank,_uid] call ExileServer_system_database_query_fireAndForget;
+					if (ADVBANKING_SERVER_DEBUG) then {[format["We see bank, we see money in bank. Time to move it back. :) Amount: %1",_bank],"OnPlayerConnected"] call ExileServer_banking_utils_diagLog;};
+				};
+				// Delete the bank line because we don't need it anymore.
+				format["deleteBank:%1",_uid] call ExileServer_system_database_query_fireAndForget;
+			};
 		};
-		// Advance Banking
+
+		if !(ADVBANKING_SERVER_FRESH) then {
+			// Keeps players who spawned in after advanced banking added having all their money on them
+			_newPlayer = format["getStats:%1",_uid] call ExileServer_system_database_query_selectSingle;
+			if (ADVBANKING_SERVER_DEBUG) then {[format["Does the player have an empty bank and money in their wallet? %1",_newPlayer],"OnPlayerConnected"] call ExileServer_banking_utils_diagLog;};
+			if ((_newPlayer select 1) == 0) then {
+				if (ADVBANKING_SERVER_DEBUG) then {[format["No money in bank, we see money in wallet. Time to move it. :) Amount: %1",_money],"OnPlayerConnected"] call ExileServer_banking_utils_diagLog;};
+				format["setAccountMoney:%1:%2",0,_uid] call ExileServer_system_database_query_fireAndForget;
+				format["updateBank:%1:%2",(_newPlayer select 0),_uid] call ExileServer_system_database_query_fireAndForget;
+			};
+		};
+		// Advanced Banking
 	}
 	else
 	{
 		format["createAccount:%1:%2", _uid, _name] call ExileServer_system_database_query_fireAndForget;
-        // Advanced Banking
-        if (ADVBANKING_SERVER_DEBUG) then {["",""] call ExileServer_banking_utils_diagLog;};
-        format["createBankAccount:%1:%2",_uid,_name] call ExileServer_system_database_query_fireAndForget;
-        // Advanced Banking
 	};
 };
 true

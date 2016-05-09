@@ -16,34 +16,32 @@ private["_sessionId","_package","_objectId","_worth","_playerObject","_playerWal
 _sessionId = _this select 0;
 _package = _this select 1;
 _worth = parseNumber(_package select 0);
-_bodyId = _package select 1;
+_objectID = _package select 1;
 
 try {
     if (ADVBANKING_SERVER_DEBUG) then {[format["Collection Request enacted. Package: %1",_package],"CollectionRequest"] call ExileServer_banking_utils_diagLog;};
     _playerObject = _sessionID call ExileServer_system_session_getPlayerObject;
-    _bodyObject = objectFromNetId _bodyId;
-    if (isNull _playerObject) then
+    _object = objectFromNetId _objectID;
+    if (isNull _object) then
 	{
 		throw 1;
 	};
-	if !(alive _playerObject) then
-	{
-		throw 2;
-	};
+    _objectWallet = _object getVariable ["DroppedAmount",0];
+    deleteVehicle _object;
     if (_worth < 0) then {
         throw 3;
     };
-    _bodyCheck = _bodyObject getVariable ["DroppedAmount",0];
-    if (ADVBANKING_SERVER_DEBUG) then {[format["Worth: %1  Body Check: %2",_worth,_bodyCheck],"CollectionRequest"] call ExileServer_banking_utils_diagLog;};
-    if (_bodyCheck != _worth) then {
+    if (_objectWallet != _worth) then {
         throw 4;
     };
-    _bodyObject setVariable ["DroppedAmount",0,true];
-    _playerWallet = _playerObject getVariable ["ExilePurse",0];
+    _object setVariable ["DroppedAmount",0];
+    if (ADVBANKING_SERVER_DEBUG) then {[format["Worth: %1  Object Check: %2",_worth,_objectWallet],"CollectionRequest"] call ExileServer_banking_utils_diagLog;};
+    _playerWallet = _playerObject getVariable ["ExileMoney",0];
     _playerWallet = _playerWallet + _worth;
-    _playerObject setVariable ["ExilePurse",_playerWallet];
-    format["updateWallet:%1:%2",_playerWallet,(getPlayerUID _playerObject)] call ExileServer_system_database_query_fireAndForget;
+    _playerObject setVariable ["ExileMoney",_playerWallet];
+    format["setAccountMoney:%1:%2",_playerWallet,(getPlayerUID _playerObject)] call ExileServer_system_database_query_fireAndForget;
     [_sessionId,"collectMoneyResponse",[str(_playerWallet),str(_worth)]] call ExileServer_system_network_send_to;
 } catch {
     [_exception,"CollectionRequest"] call ExileServer_banking_utils_diagLog;
+    deleteVehicle _object;
 };

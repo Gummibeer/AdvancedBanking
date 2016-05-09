@@ -1,93 +1,129 @@
 /*
 
- 	Name: ExileClient_banking_atm_onATMLoad.sqf
+ 	Name: AdvBanking_Client_onATMLoad.sqf
 
  	Author(s): Shix and WolfkillArcadia
     Copyright (c) 2016 Shix and WolfkillArcadia
 
-    This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
-    To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/.
-
- 	Description:
-    Handles loading of the ATM machine
+ 	Description:Handles loading of the ATM machine
 
 */
-private ["_esc","_display","_loadingCtrls","_hide","_advCtrls","_setLoadingText","_progressBar","_curLoadingBarPos","_playerName","_setPlayerName","_setAdvancedBanking","_wallet","_setBanlance","_setSharedBalance","_bank","_setPersonalBalance","_setAccountInUse"];
-
 disableSerialization;
 _display = uiNameSpace getVariable ["AdvBankingATM", displayNull];
-if (ADVBANKING_CLIENT_DEBUG) then {[format["ATM Opened"],"onATMLoad"] call ExileClient_banking_utils_diagLog;};
 
-    //hide the player list and send poptabs button
-    _list = (_display displayCtrl 1500);
-    _list ctrlSetPosition  [1.775,-0.12,0.562499,1.24];
-    _list ctrlCommit 0;
-    _text = (_display displayCtrl 1111);
-    _text ctrlSetPosition [1.8375,1.18,0.449999,0.1];
-    _text ctrlCommit 0;
-    _button = (_display displayCtrl 1611);
-    _button ctrlSetPosition [1.8375,1.16,0.449999,0.1];
-    _button ctrlCommit 0;
-    TransferSlide = false;
+//Transfer
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)+1.7,_ctrlPos select 1];
+    _ctrl ctrlCommit 0;
+} forEach [9002,9022,9026,9034,9035,9036,9038,9039,9040,9041,2200,9042,9044];
 
-    //hide all the ctrls
-    _advCtrls = [1600,1607,1400,1103,1104,1604,1605,1107,1108,1109,1105,1106,1100,1102,1110,1610,11012];
+//Left Side Bar
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)-0.8,_ctrlPos select 1];
+    _ctrl ctrlCommit 0;
+} forEach [9001,9006,9007,9028,9029,9030,9031,9005,9023,9046,9027,9045,9043];
+
+//Account
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [_ctrlPos select 0,(_ctrlPos select 1)-0.5];
+    _ctrl ctrlCommit 0;
+} forEach [9014,9021,9032,9033,9075,9076,9077,9078];
+
+//Deposit
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)-1.4,_ctrlPos select 1];
+    _ctrl ctrlCommit 0;
+} forEach [9004,9008,9010,9012,9019,9024,9047,9015,9016];
+
+//Withdraw
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)+1.1,_ctrlPos select 1];
+    _ctrl ctrlCommit 0;
+} forEach [9003,9009,9011,9013,9017,9018,9020,9025,9048];
+
+//Advert
+_ctrl = _display displayCtrl 9049;
+_ctrlPos = ctrlPosition _ctrl;
+_ctrl ctrlSetPosition [_ctrlPos select 0,(_ctrlPos select 1)+0.7];
+_ctrl ctrlCommit 0;
+
+uiSleep 0.25;
+//Set Player Name
+(_display displayCtrl 9029) ctrlSetText Format ["%1",toUpper name player];
+//Set player Account UID
+(_display displayCtrl 9031) ctrlSetText Format ["%1",getPlayerUID player];
+_depositInputBox = _display displayCtrl 9008;
+ctrlSetFocus _depositInputBox;
+(_display displayCtrl 9033) ctrlSetText Format["%1",ExileClientBank];
+(_display displayCtrl 9078) ctrlSetText Format["%1",ExileClientPlayerMoney];
+
+_TransferCombo = _display displayCtrl 9036;
+lbClear _TransferCombo;
+{
+    _index = _TransferCombo lbAdd (name _x);
+    _TransferCombo lbSetData [_index, netId _x];
+    if (_x isEqualTo player) then
     {
-        _hide = (_display displayCtrl _x);
-        _hide ctrlSetFade 1;
-        _hide ctrlCommit 0;
-    } forEach _advCtrls;
-    //Set Loading bar  text
-    _setLoadingText = (_display displayCtrl 1120);
-    _setLoadingText ctrlSetStructuredText parseText Format["<t color='#00b2cd' font='OrbitronLight' size='2' valign='middle' align='center' shadow='0'>Loading</t>"];
-
-    _progressBar = (_display displayCtrl 1900);
-    _curLoadingBarPos = 0;
-    while {_curLoadingBarPos < 1} do {
-        _curLoadingBarPos = _curLoadingBarPos + 0.01;
-        _progressBar progressSetPosition _curLoadingBarPos;
-        uiSleep 0.01;
+        _TransferCombo lbSetColor [_index, [0/255, 178/255, 205/255, 1]];
+    }
+    else
+    {
+        if !(alive _x) then
+        {
+            _TransferCombo lbSetColor [_index, [225/255, 65/255, 65/255, 1]];
+        };
     };
+}
+forEach allPlayers;
+lbSort [_TransferCombo, "ASC"];
 
-    _loadingCtrls = [1900,1120];
-    {
-        _hide = (_display displayCtrl _x);
-        _hide ctrlSetFade 1;
-        _hide ctrlCommit 0.25;
-    } forEach _loadingCtrls;
 
-    uiSleep 0.25;
+//Transfer
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)-1.7,_ctrlPos select 1];
+    _ctrl ctrlCommit 0.25;
+} forEach [9002,9022,9026,9034,9035,9036,9038,9039,9040,9041,2200,9042,9044];
 
-    _advCtrls = [1600,1607,1400,1103,1104,1604,1605,1107,1108,1109,1105,1106,1100,1102,1110,1610];
-    {
-        _hide = (_display displayCtrl _x);
-        _hide ctrlSetFade 0;
-        _hide ctrlCommit 0.5;
-    } forEach _advCtrls;
+//Left Side Bar
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)+0.8,_ctrlPos select 1];
+    _ctrl ctrlCommit 0.25;
+} forEach [9001,9006,9007,9028,9029,9030,9031,9005,9023,9046,9027,9045,9043];
 
-    //Set The palyer name (Top left)
-    _playerName = name player;
-    _setPlayerName = (_display displayCtrl 1100);
-    _setPlayerName ctrlSetStructuredText parseText Format["<t color='#00b2cd' font='OrbitronLight' size='2' valign='middle' align='center' shadow='0'>%1</t>",toUpper _playerName];
+//Account
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [_ctrlPos select 0,(_ctrlPos select 1)+0.5];
+    _ctrl ctrlCommit 0.25;
+} forEach [9014,9021,9032,9033,9075,9076,9077,9078];
 
-    //Set Advanced banking title (Top center)
-    _setAdvancedBanking = (_display displayCtrl 1101);
-    _setAdvancedBanking ctrlSetStructuredText parseText Format["<t color='#00b2cd' font='OrbitronLight' size='2' valign='middle' align='center' shadow='0'>ADVANCED BANKING</t>"];
+//Deposit
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)+1.4,_ctrlPos select 1];
+    _ctrl ctrlCommit 0.25;
+} forEach [9004,9008,9010,9012,9019,9024,9047,9015,9016];
 
-    //Set The players Balance (Top Right)
-    _wallet = ExileClientPlayerMoney;
-    _setBanlance = (_display displayCtrl 1102);
-    _setBanlance ctrlSetStructuredText parseText Format["<t valign='middle' align='center' color='#00b2cd' font='OrbitronLight' size='2'>%1<img image='\exile_assets\texture\ui\poptab_notification_ca.paa' size='1.6' shadow='true' /></t>",_wallet];
-
-    //set the Shared bank account balance
-    _setSharedBalance = (_display displayCtrl 1107);
-    _setSharedBalance ctrlSetStructuredText parseText Format["<t color='#00b2cd' font='OrbitronLight' size='0.85' valign='middle' align='center' shadow='0'><br/><t font='OrbitronMedium' size='1.7' color='#ffffff'>NOT YET IMPLIMENTED</t><br/>SHARED BANK BALANCE</t>"];
-
-    //set the Shared bank account balance
-    _bank = ExileClientBank;
-    _setPersonalBalance = (_display displayCtrl 1108);
-    _setPersonalBalance ctrlSetStructuredText parseText Format["<t color='#00b2cd' font='OrbitronLight' size='0.85' valign='middle' align='center' shadow='0'><br/><t font='OrbitronMedium' size='1.7' color='#ffffff'>%1<img image='\exile_assets\texture\ui\poptab_notification_ca.paa' size='1.6' shadow='true' /></t><br/>PERSONAL BANK BALANCE</t>",_bank];
-
-    //set account in use
-    _setAccountInUse = (_display displayCtrl 1109);
-    _setAccountInUse ctrlSetStructuredText parseText Format["<t color='#00b2cd' font='OrbitronLight' size='0.7' valign='middle' align='center' shadow='0'><br/><t font='OrbitronMedium' size='1.7' color='#ffffff'>PERSONAL</t><br/>ACCOUNT IN USE</t>"];
+//Withdraw
+{
+    _ctrl = _display displayCtrl _x;
+    _ctrlPos = ctrlPosition _ctrl;
+    _ctrl ctrlSetPosition [(_ctrlPos select 0)-1.1,_ctrlPos select 1];
+    _ctrl ctrlCommit 0.25;
+} forEach [9003,9009,9011,9013,9017,9018,9020,9025,9048];

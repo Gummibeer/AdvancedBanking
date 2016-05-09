@@ -21,7 +21,7 @@ class AdvBankingCreditCard {
 	onLoad = "uiNamespace setVariable ['AdvBankingCreditCard', _this select 0]";
 
 	class controlsBackground {
-        class AdvBankingCreditcardBG: AdvBakingRscPicture
+        class AdvBankingCreditcardBG: AdvBankingRscPicture
         {
         	idc = 1200;
         	text = "AdvancedBanking\images\IDCard.paa";
@@ -30,66 +30,49 @@ class AdvBankingCreditCard {
         	w = 0.17526 * safezoneW;
         	h = 0.250 * safezoneH;
         };
-		class AdvBankingProfilePic: AdvBakingRscPicture
-		{
-			idc = 1201;
-			text = "AdvancedBanking\images\profile1.paa";
-			x = 0.920000 * safezoneW + safezoneX;
-			y = 0.752 * safezoneH + safezoneY;
-			w = 0.04280 * safezoneW;
-			h = 0.06435 * safezoneH;
-		};
-		class AdvBankingCardName: AdvBakingRscStructuredText
+		class AdvBankingCardName: AdvBankingRscStructuredText
 		{
 			idc = 1100;
 			text = "Name"; //--- ToDo: Localize;
-			x = 0.806822 * safezoneW + safezoneX;
-			y = 0.690 * safezoneH + safezoneY;
+			x = 0.843 * safezoneW + safezoneX;
+			y = 0.705 * safezoneH + safezoneY;
 			w = 0.139254 * safezoneW;
 			h = 0.033 * safezoneH;
+			style = 0;
 		};
-		class AdvBankingInmate: AdvBakingRscStructuredText
+		class AdvBankingInmate: AdvBankingRscStructuredText
 		{
 			idc = 1101;
 			text = "INMATE"; //--- ToDo: Localize;
 			x = 0.806822 * safezoneW + safezoneX;
-			y = 0.710 * safezoneH + safezoneY;
+			y = 0.705 * safezoneH + safezoneY;
 			w = 0.139254 * safezoneW;
 			h = 0.033 * safezoneH;
 		};
-		class AdvBankingWalletAmmountHeader: AdvBakingRscStructuredText
+		class AdvBankingWalletAmmountHeader: AdvBankingRscStructuredText
 		{
 			idc = 1102;
 			text = "WALLET AMMOUNT"; //--- ToDo: Localize;
 			x = 0.80200 * safezoneW + safezoneX;
-			y = 0.748 * safezoneH + safezoneY;
+			y = 0.77 * safezoneH + safezoneY;
 			w = 0.139254 * safezoneW;
 			h = 0.033 * safezoneH;
 		};
-		class AdvBankingWalletAmmount: AdvBakingRscStructuredText
+		class AdvBankingWalletAmmount: AdvBankingRscStructuredText
 		{
 			idc = 1103;
 			text = "50000"; //--- ToDo: Localize;
 			x = 0.80300 * safezoneW + safezoneX;
-			y = 0.761 * safezoneH + safezoneY;
+			y = 0.785 * safezoneH + safezoneY;
 			w = 0.139254 * safezoneW;
 			h = 0.033 * safezoneH;
 		};
-		class AdvBankingRandNum: AdvBakingRscStructuredText
-		{
-			idc = 1104;
-			text = "W653ALN"; //--- ToDo: Localize;
-			x = 0.853185 * safezoneW + safezoneX;
-			y = 0.790 * safezoneH + safezoneY;
-			w = 0.0722056 * safezoneW;
-			h = 0.033 * safezoneH;
-		};
-		class AdvBankingTransDate: AdvBakingRscStructuredText
+		class AdvBankingTransDate: AdvBankingRscStructuredText
 		{
 			idc = 1105;
 			text = "TransDate"; //--- ToDo: Localize;
-			x = 0.840398 * safezoneW + safezoneX;
-			y = 0.805 * safezoneH + safezoneY;
+			x = 0.833398 * safezoneW + safezoneX;
+			y = 0.82 * safezoneH + safezoneY;
 			w = 0.139254 * safezoneW;
 			h = 0.033 * safezoneH;
 		};

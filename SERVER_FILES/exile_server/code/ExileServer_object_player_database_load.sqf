@@ -38,9 +38,9 @@ _player setName _name;
 // Advanced Banking
 private["_advBank"];
 _advBank = format["getStats:%1",_playerUID] call ExileServer_system_database_query_selectSingle;
-_player setVariable ["ExilePurse", (_advBank select 1)];
-_player setVariable ["ExileBank",(_advBank select 2)];
+_player setVariable ["ExileBank",(_advBank select 1)];
 // Advanced Banking
+_player setVariable ["ExileMoney", (_data select 38)];
 _player setVariable ["ExileScore", (_data select 39)];
 _player setVariable ["ExileKills", (_data select 40)];
 _player setVariable ["ExileDeaths", (_data select 41)];
@@ -209,7 +209,7 @@ _player addMPEventHandler ["MPKilled", {_this call ExileServer_object_player_eve
 	"loadPlayerResponse",
 	[
 		(netId _player),
-		str (_player getVariable ["ExilePurse", 0]),
+		str (_player getVariable ["ExileMoney", 0]),
 		str (_player getVariable ["ExileScore", 0]),
 		(_player getVariable ["ExileKills", 0]),
 		(_player getVariable ["ExileDeaths", 0]),
@@ -230,6 +230,6 @@ call ExileServer_system_network_send_to;
     ]
 ]
 call ExileServer_system_network_send_to;
-if (ADVBANKING_SERVER_DEBUG) then {["Database processed with Advanced Banking","DatabaseLoad"] call ExileServer_banking_utils_diagLog;};    
+if (ADVBANKING_SERVER_DEBUG) then {["Database processed with Advanced Banking","DatabaseLoad"] call ExileServer_banking_utils_diagLog;};
 [_sessionID, _player] call ExileServer_system_session_update;
 true

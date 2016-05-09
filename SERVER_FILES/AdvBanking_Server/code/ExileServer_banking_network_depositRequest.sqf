@@ -28,7 +28,7 @@ try {
 	{
 		throw 2;
 	};
-    _playerWallet = _playerObject getVariable ["ExilePurse", 0];
+    _playerWallet = _playerObject getVariable ["ExileMoney", 0];
     _playerBank = _playerObject getVariable ["ExileBank", 0];
     if (_playerWallet < 0) then {
         throw 3;
@@ -38,11 +38,11 @@ try {
     };
     _playerWallet = _playerWallet - _moneyRequest;
     _playerBank = _playerBank + _moneyRequest;
-    _playerObject setVariable ["ExilePurse", _playerWallet];
+    _playerObject setVariable ["ExileMoney", _playerWallet];
     _playerObject setVariable ["ExileBank",_playerBank];
     format["setStats:%1:%2:%3",_playerWallet,_playerBank,(getPlayerUID _playerObject)] call ExileServer_system_database_query_fireAndForget;
     [_sessionID,"updateATMResponse",[str(_playerWallet),str(_playerBank)]] call ExileServer_system_network_send_to;
 } catch {
-    [_sessionID,"handleATMMessage", ["Error",_exception]] call ExileServer_system_network_send_to;
+    [_sessionID,"updateATMMessage",[1,"Error",_exception]] call ExileServer_system_network_send_to;
     [_exception,"DepositRequest"] call ExileServer_banking_utils_diagLog;
 };

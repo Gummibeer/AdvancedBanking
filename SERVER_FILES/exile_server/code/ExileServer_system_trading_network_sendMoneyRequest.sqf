@@ -45,7 +45,7 @@ try
     _senderPlayerObject setVariable ["ExileBank", _senderAccountBalance];
 	format["updateBank:%1:%2", _senderAccountBalance, getPlayerUID _senderPlayerObject] call ExileServer_system_database_query_fireAndForget;
 	[_sessionID, "updateBankStats", [str _senderAccountBalance]] call ExileServer_system_network_send_to;
-	[_sessionID,"handleATMMessage", ["Success","We have successfully processed your transfer"]] call ExileServer_system_network_send_to;
+	[_sessionID,"handleATMMessage", [3,"Success","We have successfully processed your transfer"]] call ExileServer_system_network_send_to;
 	_receiverAccountBalance = _receiverAccountBalance + _amountToTransfer;
     _receiverPlayerObject setVariable ["ExileBank", _receiverAccountBalance];
     format["updateBank:%1:%2", _receiverAccountBalance, getPlayerUID _receiverPlayerObject] call ExileServer_system_database_query_fireAndForget;
@@ -54,6 +54,6 @@ try
 }
 catch
 {
-	[_sessionID,"handleATMMessage", [0,_exception]] call ExileServer_system_network_send_to;
+	[_sessionID,"handleATMMessage", [3,"Error",_exception]] call ExileServer_system_network_send_to;
 	_exception call ExileServer_util_log;
 };

@@ -9,6 +9,7 @@ class CfgPatches {
         weapons[] = {};
     };
 };
+
 class CfgFunctions {
     class AdvBankingServer {
         class main {

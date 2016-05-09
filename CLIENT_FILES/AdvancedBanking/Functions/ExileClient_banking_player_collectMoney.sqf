@@ -18,14 +18,29 @@ _worth = _this select 1;
 _objectNetId = netId _object;
 
 try {
-    if (_worth < 0) then {
-        throw "Instructions unclear, received zero, expected millions.";
+
+    if (_worth <= 0) then {
+        throw true;
     };
     player playMove "AinvPknlMstpSnonWnonDr_medic5";
-    uiSleep 10;
+    for "_i" from 0 to 12 do {
+        if !(alive player) then
+        {
+            throw false;
+        };
+        uiSleep 1;
+    };
     ["collectionRequest",[str(_worth),_objectNetId]] call ExileClient_system_network_send;
-    if (ADVBANKING_CLIENT_DEBUG) then {[format["Collect some Money. Package: %1",_worth],"CollectMoney"] call ExileClient_banking_utils_diagLog;};
+    if (ADVBANKING_CLIENT_DEBUG) then {[format["Collected some Money. Package: %1",_worth],"CollectMoney"] call ExileClient_banking_utils_diagLog;};
+
 } catch {
-    [_exception,"CollectMoney"] call ExileClient_banking_utils_diagLog;
-    ["Whoops",["Houston, we done messed up. Please inform an admin"]] call ExileClient_gui_notification_event_addNotification;
+
+    if (_exception) then {
+        [format["Wallet from %1 was zero",_object],"CollectMoney"] call ExileClient_banking_utils_diagLog;
+        ["Whoops",["There was nothing in the wallet"]] call ExileClient_gui_notification_event_addNotification;
+    } else {
+        player switchMove "";
+        ["switchMoveRequest", [netId player, ""]] call ExileClient_system_network_send;
+    };
+
 };

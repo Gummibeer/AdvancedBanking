@@ -1,6 +1,6 @@
 /*
 
- 	Name: ExileClient_banking_player_withdrawal.sqf
+ 	Name: ExileClient_banking_atm_withdrawal.sqf
 
  	Author(s): Shix and WolfkillArcadia
     Copyright (c) 2016 Shix and WolfkillArcadia
@@ -15,7 +15,7 @@
 private["_display","_editBox","_amount","_fromAccount","_exception"];
 disableSerialization;
 _display = uiNameSpace getVariable ["AdvBankingATM", displayNull];
-_editBox = (_display displayCtrl 1400);
+_editBox = (_display displayCtrl 9009);
 _amount = parseNumber(ctrlText _editBox);
 _fromAccount = "PersonalBank";
 
@@ -31,6 +31,6 @@ try {
         ["withdrawalRequest",[str(_amount)]] call ExileClient_system_network_send;
     };
 } catch {
-    ["Error",_exception] call ExileClient_banking_network_handleATMMessage;
+    [2,"Error",_exception] call ExileClient_banking_network_handleATMMessage;
     [_exception,"WithdrawalMoney"] call ExileClient_banking_utils_diagLog;
 };

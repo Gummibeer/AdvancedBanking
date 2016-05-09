@@ -22,12 +22,15 @@ format["deletePlayer:%1", _victim getVariable ["ExileDatabaseId", -1]] call Exil
 _victim setVariable ["ExileIsDead", true];
 _victim setVariable ["ExileName", name _victim, true];
 // Advanced Banking
-private["_wallet"];
-_wallet = _victim getVariable ["ExilePurse",0];
+private["_wallet","_grave"];
+_wallet = _victim getVariable ["ExileMoney",0];
 if (_wallet > 0) then {
-    _victim setVariable ["DroppedAmount",_wallet,true];
-    _victim setVariable ["ExilePurse",0];
-    format["updateWallet:%1:%2",0,(getPlayerUID _victim)] call ExileServer_system_database_query_fireAndForget;
+    _grave = createVehicle["Land_Suitcase_F",[((_victimPosition select 0) + 0.7),(_victimPosition select 1),_victimPosition select 2],[],0,"CAN_COLLIDE"];
+    _grave setDir (getDir _victim);
+    _grave setVariable ["ExileName", name _victim, true];
+    _grave setVariable ["DroppedAmount",_wallet,true];
+    _victim setVariable ["ExileMoney",0];
+    format["setAccountMoney:%1:%2",0,(getPlayerUID _victim)] call ExileServer_system_database_query_fireAndForget;
 };
 // Advanced Banking
 _victim call ExileServer_object_flies_spawn;
