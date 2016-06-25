@@ -12,7 +12,6 @@ switch (toLower worldName) do {
 	case "altis": {
 		_objects =
 		[
-			
 			["Land_Atm_01_F",[4562.852051,21455.285156,0],165.48,0,0,false], // Oreokastro
 			["Land_Atm_01_F",[9401.413086,20283.503906,0],252.538,0,0,false], // Abdera
 			["Land_Atm_01_F",[8664.698242,18287.570313,0],154.495,0,0,false], // Syrta
