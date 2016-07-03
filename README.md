@@ -2,6 +2,8 @@
 ###### Made by Shix and WolfkillArcadia
 Advance Banking is a complete rewrite of Exile's default money system. It separates Exile Money into a wallet and a bank, making money a more valuable object. This, in turn, creates a more realistic survival scenario.
 
+It's just for Exile v0.9.61 and earlier - since the Money Update in v0.9.8 with physical poptabs and lockers it doesn't work and it won't get supported anymore.
+
 ---
 
 ### Features
